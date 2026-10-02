@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EduMovil</title>
+<meta name="theme-color" content="#001D4D">
+<meta name="apple-mobile-web-app-title" content="EduMovil">
+<link rel="icon" type="image/png" href="icono.png">
+<link rel="apple-touch-icon" href="icono.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        'navy-deep': '#001D4D', 'navy-dark': '#0A192F', 'primary-container': '#0f294d',
+        'on-primary': '#ffffff', 'on-primary-container': '#7a91bb', 'primary-fixed': '#d6e3ff',
+        'orange-action': '#F97316', 'orange-vibrant': '#FF8C00', 'blue-vibrant': '#2656F6',
+        'secondary-container': '#fd761a',
+        'surface': '#f7f9fc', 'surface-card': '#FFFFFF', 'surface-muted': '#F0F3F7',
+        'surface-container-low': '#f2f4f7', 'surface-container': '#eceef1', 'surface-container-highest': '#e0e3e6',
+        'text-primary': '#0F294D', 'text-secondary': '#64748B',
+        'success-green': '#10B981', 'danger-red': '#EF4444', 'error': '#ba1a1a', 'error-container': '#ffdad6'
+      },
+      fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+      fontSize: {
+        'headline-xl': ['36px', { lineHeight: '44px', fontWeight: '800' }],
+        'headline-md': ['20px', { lineHeight: '28px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', fontWeight: '600' }],
+        'label-lg': ['14px', { lineHeight: '20px', fontWeight: '600' }],
+        'label-md': ['12px', { lineHeight: '16px', fontWeight: '600' }],
+        'label-sm': ['10px', { lineHeight: '14px', fontWeight: '700' }],
+        'body-md': ['14px', { lineHeight: '20px' }],
+        'body-sm': ['12px', { lineHeight: '16px' }]
+      }
+    }
+  }
+};
+</script>
+<style>
+  html, body { margin: 0; min-height: 100%; }
+  body { background: #f7f9fc; font-family: 'Plus Jakarta Sans', sans-serif; overscroll-behavior-y: none; -webkit-tap-highlight-color: transparent; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; line-height: 1; }
+  .icon-fill { font-variation-settings: 'FILL' 1; }
+  .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  ::-webkit-scrollbar { display: none; }
+  .vista { display: none; }
+  .vista.activa { display: flex; }
+  .anim-in { animation: entrar .18s ease-out; }
+  @keyframes entrar { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body class="text-text-primary">
+
+<!-- ================= HEADER ================= -->
+<header class="fixed top-0 inset-x-0 z-30 bg-navy-deep text-on-primary pt-safe shadow-[0_4px_20px_rgba(0,29,77,0.18)]">
+  <div class="max-w-lg mx-auto h-16 px-2 flex items-center gap-1">
+    <button type="button" id="hdr-volver" aria-label="Volver" onclick="ir('inicio')" class="hidden w-11 h-11 flex items-center justify-center rounded-full hover:bg-navy-dark">
+      <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+    </button>
+    <img alt="EduMovil" class="h-9 w-auto rounded-md bg-white px-1 py-0.5 ml-2" src="data:image/jpeg;base64,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">
+    <span class="text-headline-md tracking-tight ml-2">EduMovil</span>
+  </div>
+</header>
+
+<main class="max-w-lg mx-auto w-full px-4 pt-20 pb-10">
+
+  <!-- ================= INICIO ================= -->
+  <section id="v-inicio" class="vista flex-col gap-4">
+    <div class="pt-2">
+      <h1 class="text-headline-md text-navy-deep">¿Quién eres?</h1>
+      <p class="text-body-md text-text-secondary">Toca tu nombre para registrar tus viajes.</p>
+    </div>
+    <div class="flex flex-col gap-2" id="ini-lista"></div>
+  </section>
+
+  <!-- ================= PERFIL ================= -->
+  <section id="v-perfil" class="vista flex-col gap-4">
+    <div class="flex items-center gap-3 pt-2">
+      <div class="w-14 h-14 rounded-full flex items-center justify-center text-headline-md text-on-primary shadow-md shrink-0" id="per-avatar"></div>
+      <h2 class="text-headline-md text-navy-deep truncate" id="per-nombre"></h2>
+    </div>
+
+    <div class="relative overflow-hidden rounded-xl p-5 text-on-primary shadow-xl" id="per-tarjeta">
+      <div class="absolute -right-8 -top-8 w-36 h-36 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
+      <div class="absolute right-3 bottom-1 text-white/10 pointer-events-none select-none">
+        <span class="material-symbols-outlined text-[96px]">directions_car</span>
+      </div>
+      <div class="relative z-10">
+        <span class="text-label-md uppercase tracking-widest opacity-90" id="per-etiqueta">Debes</span>
+        <div class="text-headline-xl tracking-tight mt-1" id="per-deuda">$0</div>
+        <span class="text-label-lg opacity-95" id="per-cantidad"></span>
+      </div>
+    </div>
+
+    <button type="button" onclick="abrirRegistro()" class="w-full flex items-center justify-center gap-2 bg-navy-deep active:bg-navy-dark text-on-primary py-4 px-4 rounded-xl shadow-md active:scale-[0.98] transition-all">
+      <span class="material-symbols-outlined text-[24px] text-orange-action">add_circle</span>
+      <span class="text-title-md font-bold">Registrar viaje</span>
+    </button>
+    <button type="button" onclick="abrirPago()" id="per-btn-pagar" class="w-full flex items-center justify-center gap-2 bg-surface-card hover:bg-surface-muted py-3.5 px-4 rounded-xl shadow-sm active:scale-[0.98] transition-all">
+      <span class="material-symbols-outlined icon-fill text-[22px] text-success-green">check_circle</span>
+      <span class="text-title-md text-navy-deep font-bold">Ya pagué</span>
+    </button>
+
+    <div class="flex flex-col gap-2">
+      <h3 class="text-title-md text-navy-deep font-bold px-0.5" id="per-lista-titulo">Viajes sin pagar</h3>
+      <div class="flex flex-col gap-2" id="per-lista"></div>
+    </div>
+
+    <p class="text-body-sm text-text-secondary text-center" id="per-ultimo-pago"></p>
+  </section>
+
+  <p class="text-body-sm text-center mt-6 hidden" id="estado-sync"></p>
+</main>
+
+<!-- ================= HOJA: REGISTRAR VIAJE ================= -->
+<div id="hoja-registro" class="hoja hidden fixed inset-0 z-40 items-end sm:items-center justify-center bg-navy-dark/60 backdrop-blur-sm">
+  <div class="w-full max-w-lg bg-surface-card rounded-t-2xl sm:rounded-2xl p-5 pb-safe shadow-xl flex flex-col gap-4 anim-in">
+    <div class="w-12 h-1.5 bg-surface-container-highest rounded-full mx-auto -mt-1"></div>
+    <h3 class="text-headline-md text-navy-deep">¿Cuándo viajaste?</h3>
+    <div class="grid grid-cols-3 gap-2" id="reg-fechas"></div>
+    <h3 class="text-headline-md text-navy-deep pt-1">¿Qué viaje hiciste?</h3>
+    <div class="grid grid-cols-3 gap-2" id="reg-trayectos"></div>
+    <div class="flex flex-col gap-2 pt-1 pb-3">
+      <button type="button" id="reg-btn" onclick="guardarViaje()" class="w-full py-3.5 rounded-xl bg-orange-action hover:bg-orange-vibrant text-on-primary text-title-md font-bold shadow-md active:scale-[0.98] transition-all">Guardar</button>
+      <button type="button" onclick="cerrarHojas()" class="w-full py-2.5 rounded-xl text-text-secondary text-label-lg">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= HOJA: PAGO ================= -->
+<div id="hoja-pago" class="hoja hidden fixed inset-0 z-40 items-end sm:items-center justify-center bg-navy-dark/60 backdrop-blur-sm">
+  <div class="w-full max-w-lg bg-surface-card rounded-t-2xl sm:rounded-2xl p-5 pb-safe shadow-xl flex flex-col gap-4 anim-in max-h-[92vh] overflow-y-auto">
+    <div class="w-12 h-1.5 bg-surface-container-highest rounded-full mx-auto -mt-1"></div>
+    <div>
+      <h3 class="text-headline-md text-navy-deep">Registrar pago</h3>
+      <p class="text-body-md text-text-secondary" id="pag-resumen"></p>
+    </div>
+    <div class="grid grid-cols-2 gap-2" id="pag-opciones"></div>
+    <label id="pag-otro-caja" class="hidden flex-col gap-1">
+      <span class="text-label-lg text-navy-deep">¿Cuánto pagaste?</span>
+      <div class="flex items-center gap-1 rounded-lg border-2 border-surface-container focus-within:border-orange-action px-3">
+        <span class="text-title-md text-text-secondary">$</span>
+        <input id="pag-otro" type="text" inputmode="numeric" autocomplete="off" placeholder="0" class="w-full py-3 text-title-md font-bold text-navy-deep outline-none bg-transparent" oninput="formatearMonto(this)">
+      </div>
+      <span class="text-body-sm text-text-secondary" id="pag-otro-ayuda"></span>
+    </label>
+    <div class="flex flex-col gap-2 pb-3">
+      <button type="button" id="pag-btn" onclick="confirmarPago()" class="w-full py-3.5 rounded-xl text-title-md font-bold transition-all"></button>
+      <button type="button" onclick="cerrarHojas()" class="w-full py-2.5 rounded-xl text-text-secondary text-label-lg">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= DIÁLOGO ================= -->
+<div id="dialogo" class="hidden fixed inset-0 z-50 items-end sm:items-center justify-center bg-navy-dark/60 backdrop-blur-sm p-4 pb-safe">
+  <div class="w-full max-w-md bg-surface-card rounded-2xl p-5 shadow-xl flex flex-col gap-3 anim-in">
+    <h4 class="text-headline-md text-text-primary" id="dlg-titulo"></h4>
+    <p class="text-body-md text-text-secondary" id="dlg-texto"></p>
+    <div class="flex gap-2 pt-1">
+      <button type="button" id="dlg-no" class="flex-1 py-3 rounded-xl bg-surface-muted text-text-primary text-label-lg">Cancelar</button>
+      <button type="button" id="dlg-si" class="flex-1 py-3 rounded-xl bg-danger-red text-on-primary text-label-lg shadow-md active:scale-95 transition-transform">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= TOAST ================= -->
+<div id="toast" class="fixed bottom-6 left-4 right-4 max-w-md mx-auto z-50 bg-navy-deep text-on-primary p-3 rounded-xl shadow-xl flex items-center gap-3 translate-y-2 opacity-0 transition-all duration-300 pointer-events-none">
+  <span class="material-symbols-outlined text-[22px]" id="toast-icono">check_circle</span>
+  <span class="text-label-lg" id="toast-texto"></span>
+</div>
+
+<script>
+// ============================================================================
+// CONFIGURACIÓN
+// ============================================================================
+// URL de la Web App de Apps Script (Implementar > Administrar implementaciones).
+// Termina en /exec. La app se publica en GitHub Pages y guarda todo ahí.
+const API_URL = 'https://script.google.com/macros/s/AKfycbyD9MMO8XS0d13cOyipbjc8dIWmhzCmoJucHoBw9mChP8dBa-UDroBJFtwIQPwF8ggysw/exec';
+
+const CONFIG_INICIAL = {
+  costoViaje: 2300,
+  usuarios: ['Samir', 'Feña', 'Tamara', 'Karina', 'Ezequiel']
+};
+const LS = { estado: 'edumovil-estado-v2', cola: 'edumovil-cola-v2', legado: 'edumovil-datos' };
+const COLORES_AVATAR = ['bg-blue-vibrant', 'bg-secondary-container', 'bg-navy-deep', 'bg-orange-action', 'bg-primary-container'];
+const DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+
+// ============================================================================
+// ESTADO
+// ============================================================================
+// `base` = última foto recibida de la planilla. `cola` = cambios hechos en el
+// teléfono que aún no llegan. Lo que se muestra es base + cola aplicada encima.
+let base = leerLS(LS.estado, null) || { config: CONFIG_INICIAL, viajes: [], abonos: {}, pagos: [] };
+base.abonos = base.abonos || {};
+let cola = leerLS(LS.cola, []);
+let usuarioActual = null;
+let sincronizando = false;
+let repetirSync = false;
+let sinConexion = false;
+let reg = {};
+
+function leerLS(clave, defecto) {
+  try { const v = localStorage.getItem(clave); return v === null ? defecto : JSON.parse(v); }
+  catch (e) { return defecto; }
+}
+function persistir() {
+  try {
+    localStorage.setItem(LS.estado, JSON.stringify(base));
+    localStorage.setItem(LS.cola, JSON.stringify(cola));
+  } catch (e) { /* almacenamiento no disponible */ }
+}
+function nuevoId() {
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+}
+
+// Igual que en Code.gs: un pago (total o abono) cubre primero los viajes más
+// antiguos; lo que no alcanza a completar un viaje queda como abono.
+function aplicarOp(s, op) {
+  if (op.tipo === 'agregarViaje') {
+    if (!s.viajes.some(v => v.id === op.id)) {
+      s.viajes.push({ id: op.id, usuario: op.usuario, fecha: op.fecha, trayecto: op.trayecto, costo: s.config.costoViaje });
+    }
+  } else if (op.tipo === 'eliminarViaje') {
+    s.viajes = s.viajes.filter(v => v.id !== op.viajeId);
+  } else if (op.tipo === 'pagar') {
+    let credito = abonoDe(s, op.usuario) + op.monto;
+    const cubiertos = new Set();
+    viajesDe(s, op.usuario).reverse().forEach(v => {
+      if (credito >= v.costo) { credito -= v.costo; cubiertos.add(v.id); }
+    });
+    s.viajes = s.viajes.filter(v => !cubiertos.has(v.id));
+    s.abonos[op.usuario] = credito;
+    if (!s.pagos.some(p => p.id === op.id)) {
+      s.pagos.unshift({ id: op.id, usuario: op.usuario, monto: op.monto, viajes: cubiertos.size, fecha: op.fecha });
+    }
+  }
+}
+function estadoVisible() {
+  const s = { config: base.config, viajes: base.viajes.slice(), abonos: Object.assign({}, base.abonos), pagos: base.pagos.slice() };
+  cola.forEach(op => aplicarOp(s, op));
+  return s;
+}
+/** Viajes pendientes, el más reciente primero (el mismo día, la vuelta arriba). */
+function viajesDe(s, usuario) {
+  const orden = t => (t === 'Vuelta' ? 1 : 0);
+  return s.viajes.filter(v => v.usuario === usuario).sort((a, b) =>
+    a.fecha !== b.fecha ? (a.fecha < b.fecha ? 1 : -1) : orden(b.trayecto) - orden(a.trayecto));
+}
+function abonoDe(s, usuario) {
+  return s.abonos[usuario] || 0;
+}
+function deudaDe(s, usuario) {
+  const total = viajesDe(s, usuario).reduce((a, v) => a + (Number(v.costo) || 0), 0);
+  return Math.max(0, total - abonoDe(s, usuario));
+}
+function encolar(op) {
+  cola.push(op);
+  persistir();
+  render();
+  sincronizar();
+}
+
+// ============================================================================
+// COMUNICACIÓN CON APPS SCRIPT
+// ============================================================================
+function llamarApi(cuerpo) {
+  if (!API_URL) return Promise.reject(new Error('Falta API_URL'));
+  // text/plain evita el preflight CORS, que Apps Script no soporta
+  return fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(cuerpo)
+  }).then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  });
+}
+
+async function sincronizar() {
+  if (sincronizando) { repetirSync = true; return; }
+  sincronizando = true;
+  const enviadas = cola.slice();
+  try {
+    const r = await llamarApi({ ops: enviadas });
+    if (!r || !r.ok) throw new Error((r && r.error) || 'Respuesta inválida');
+    const ids = new Set(enviadas.map(o => o.id));
+    cola = cola.filter(o => !ids.has(o.id));
+    base = r.estado;
+    base.abonos = base.abonos || {};
+    sinConexion = false;
+    persistir();
+    const rechazada = (r.resultados || []).find(x => !x.ok);
+    if (rechazada) avisar(rechazada.error, 'error');
+    if (usuarioActual && base.config.usuarios.indexOf(usuarioActual) === -1) vistaActual = 'inicio';
+  } catch (e) {
+    sinConexion = true;
+  } finally {
+    sincronizando = false;
+    if (vistaActual === 'inicio' && usuarioActual) ir('inicio'); else render();
+    if (repetirSync) { repetirSync = false; sincronizar(); }
+  }
+}
+
+// ============================================================================
+// NAVEGACIÓN Y RENDER
+// ============================================================================
+let vistaActual = 'inicio';
+
+function ir(vista) {
+  if (vista === 'inicio') usuarioActual = null;
+  vistaActual = vista;
+  document.getElementById('hdr-volver').classList.toggle('hidden', vista === 'inicio');
+  document.querySelectorAll('.vista').forEach(el => el.classList.toggle('activa', el.id === 'v-' + vista));
+  window.scrollTo(0, 0);
+  render();
+}
+function entrar(nombre) {
+  usuarioActual = nombre;
+  ir('perfil');
+}
+
+function render() {
+  const s = estadoVisible();
+  if (vistaActual === 'inicio') renderInicio(s);
+  if (vistaActual === 'perfil') renderPerfil(s);
+  const aviso = document.getElementById('estado-sync');
+  const mostrar = sinConexion || cola.length > 0;
+  aviso.classList.toggle('hidden', !mostrar);
+  aviso.className = 'text-body-sm text-center mt-6 ' + (mostrar ? '' : 'hidden ') + (sinConexion ? 'text-orange-action' : 'text-text-secondary');
+  aviso.textContent = !API_URL
+    ? 'Falta configurar la planilla: pega la URL /exec en API_URL dentro de index.html.'
+    : sinConexion
+    ? 'Sin conexión. Tus cambios están guardados en el teléfono y se enviarán solos.'
+    : 'Guardando en la planilla…';
+}
+
+function renderInicio(s) {
+  document.getElementById('ini-lista').innerHTML = s.config.usuarios.map((u, i) => `
+    <button type="button" onclick="entrar(${attr(u)})" class="w-full text-left p-3 rounded-xl bg-surface-card shadow-sm hover:shadow-md active:scale-[0.99] transition-all flex items-center justify-between gap-2 group">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-12 h-12 rounded-full ${COLORES_AVATAR[i % COLORES_AVATAR.length]} text-on-primary flex items-center justify-center text-headline-md shadow-sm shrink-0">${esc(u.charAt(0).toUpperCase())}</div>
+        <span class="text-title-md text-text-primary truncate">${esc(u)}</span>
+      </div>
+      <div class="w-9 h-9 rounded-lg bg-surface-muted group-hover:bg-orange-action group-hover:text-on-primary flex items-center justify-center transition-colors shrink-0">
+        <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+      </div>
+    </button>`).join('');
+}
+
+function renderPerfil(s) {
+  const u = usuarioActual;
+  const viajes = viajesDe(s, u);
+  const n = viajes.length;
+  const i = s.config.usuarios.indexOf(u);
+
+  const av = document.getElementById('per-avatar');
+  av.className = 'w-14 h-14 rounded-full flex items-center justify-center text-headline-md text-on-primary shadow-md shrink-0 ' + COLORES_AVATAR[(i < 0 ? 0 : i) % COLORES_AVATAR.length];
+  av.textContent = u.charAt(0).toUpperCase();
+  document.getElementById('per-nombre').textContent = u;
+
+  document.getElementById('per-tarjeta').className = 'relative overflow-hidden rounded-xl p-5 text-on-primary shadow-xl bg-gradient-to-br ' +
+    (n ? 'from-orange-action to-orange-vibrant' : 'from-success-green to-emerald-600');
+  document.getElementById('per-etiqueta').textContent = n ? 'Debes' : 'Estás al día';
+  document.getElementById('per-deuda').textContent = clp(deudaDe(s, u));
+  const abono = abonoDe(s, u);
+  document.getElementById('per-cantidad').textContent = n
+    ? plural(n, 'viaje') + ' sin pagar' + (abono ? ` • ya abonaste ${clp(abono)}` : '')
+    : 'No tienes viajes pendientes';
+  document.getElementById('per-btn-pagar').classList.toggle('hidden', n === 0);
+
+  document.getElementById('per-lista-titulo').classList.toggle('hidden', n === 0);
+  document.getElementById('per-lista').innerHTML = viajes.map(v => `
+    <article class="bg-surface-card p-3 rounded-xl shadow-sm flex items-center justify-between gap-2">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-10 h-10 rounded-full bg-primary-fixed/60 flex items-center justify-center shrink-0 text-navy-deep">
+          <span class="material-symbols-outlined text-[20px]">${v.trayecto === 'Vuelta' ? 'home' : 'school'}</span>
+        </div>
+        <div class="min-w-0">
+          <span class="text-title-md text-navy-deep font-bold block">${esc(v.trayecto || 'Viaje')}</span>
+          <span class="text-body-sm text-text-secondary">${esc(nombreDia(v.fecha))} • ${esc(fechaLarga(v.fecha))}</span>
+        </div>
+      </div>
+      <button type="button" onclick="eliminarViaje(${attr(v.id)})" aria-label="Eliminar viaje" class="w-9 h-9 rounded-full bg-surface-muted hover:bg-error-container text-text-secondary hover:text-error flex items-center justify-center transition-colors active:scale-95 shrink-0">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+      </button>
+    </article>`).join('');
+
+  const ultimo = s.pagos.filter(p => p.usuario === u).sort((a, b) => (a.fecha < b.fecha ? 1 : -1))[0];
+  document.getElementById('per-ultimo-pago').textContent = ultimo
+    ? `Último pago: ${clp(ultimo.monto)} el ${fechaLarga(ultimo.fecha)}`
+    : '';
+}
+
+// ============================================================================
+// REGISTRAR VIAJE
+// ============================================================================
+function abrirHoja(id) {
+  const h = document.getElementById(id);
+  h.classList.remove('hidden');
+  h.classList.add('flex');
+  h.onclick = (e) => { if (e.target === h) cerrarHojas(); };
+}
+function cerrarHojas() {
+  document.querySelectorAll('.hoja').forEach(h => { h.classList.add('hidden'); h.classList.remove('flex'); });
+}
+
+const OPCIONES_TRAYECTO = {
+  ida: { texto: 'Ida', icono: 'school', tramos: ['Ida'] },
+  vuelta: { texto: 'Vuelta', icono: 'home', tramos: ['Vuelta'] },
+  ambos: { texto: 'Ida y vuelta', icono: 'sync_alt', tramos: ['Ida', 'Vuelta'] }
+};
+
+function abrirRegistro() {
+  reg = { dia: inicioDia(new Date()), opcion: 'hoy', trayecto: 'ambos' };
+  renderFechas();
+  renderTrayectos();
+  abrirHoja('hoja-registro');
+}
+
+function renderTrayectos() {
+  document.getElementById('reg-trayectos').innerHTML = Object.keys(OPCIONES_TRAYECTO).map(k => {
+    const o = OPCIONES_TRAYECTO[k];
+    const sel = reg.trayecto === k;
+    return `<button type="button" onclick="elegirTrayecto('${k}')" class="py-3 px-1 rounded-lg flex flex-col items-center justify-center gap-1 active:scale-95 transition-transform ${sel ? 'bg-navy-deep text-on-primary shadow-sm' : 'bg-surface-muted text-navy-deep'}">
+      <span class="material-symbols-outlined text-[20px] ${sel ? 'text-orange-action' : 'text-text-secondary'}">${o.icono}</span>
+      <span class="text-label-lg">${o.texto}</span>
+    </button>`;
+  }).join('');
+  const n = OPCIONES_TRAYECTO[reg.trayecto].tramos.length;
+  document.getElementById('reg-btn').textContent = n === 1 ? 'Guardar 1 viaje' : `Guardar ${n} viajes`;
+}
+function elegirTrayecto(k) {
+  reg.trayecto = k;
+  renderTrayectos();
+}
+
+function renderFechas() {
+  const hoy = inicioDia(new Date());
+  const estilo = sel => `relative py-3 px-2 rounded-lg flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform overflow-hidden ${sel ? 'bg-navy-deep text-on-primary shadow-sm' : 'bg-surface-muted text-navy-deep'}`;
+  const sub = (t, sel) => `<span class="text-label-sm uppercase tracking-wider ${sel ? 'opacity-80' : 'text-text-secondary'}">${t}</span>`;
+  const otra = reg.opcion === 'otra';
+  document.getElementById('reg-fechas').innerHTML = `
+    <button type="button" onclick="elegirDia(0)" class="${estilo(reg.opcion === 'hoy')}">${sub('Hoy', reg.opcion === 'hoy')}<span class="text-title-md font-bold">${diaMes(hoy)}</span></button>
+    <button type="button" onclick="elegirDia(1)" class="${estilo(reg.opcion === 'ayer')}">${sub('Ayer', reg.opcion === 'ayer')}<span class="text-title-md font-bold">${diaMes(sumarDias(hoy, -1))}</span></button>
+    <label class="${estilo(otra)}">
+      ${otra ? sub(DIAS[reg.dia.getDay()].slice(0, 3), true) + `<span class="text-title-md font-bold">${diaMes(reg.dia)}</span>`
+             : '<span class="material-symbols-outlined text-[18px] text-text-secondary">event</span><span class="text-label-md">Otro día</span>'}
+      <input type="date" aria-label="Elegir otro día" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" max="${isoDia(hoy)}" value="${isoDia(reg.dia)}" onclick="try { this.showPicker(); } catch (e) {}" onchange="elegirOtroDia(this.value)">
+    </label>`;
+}
+
+function elegirDia(diasAtras) {
+  reg.dia = sumarDias(inicioDia(new Date()), -diasAtras);
+  reg.opcion = diasAtras === 0 ? 'hoy' : 'ayer';
+  renderFechas();
+}
+function elegirOtroDia(valor) {
+  if (!valor) return;
+  const [a, m, d] = valor.split('-').map(Number);
+  const dia = new Date(a, m - 1, d);
+  const atras = Math.round((inicioDia(new Date()) - dia) / 86400000);
+  if (atras < 0) { avisar('No puedes registrar un viaje en el futuro', 'error'); return; }
+  if (atras <= 1) return elegirDia(atras);
+  reg.dia = dia;
+  reg.opcion = 'otra';
+  renderFechas();
+}
+
+async function guardarViaje() {
+  // solo importa el día: se guarda a mediodía para que la zona horaria no lo cambie de fecha
+  const fecha = new Date(reg.dia.getFullYear(), reg.dia.getMonth(), reg.dia.getDate(), 12).toISOString();
+  const tramos = OPCIONES_TRAYECTO[reg.trayecto].tramos;
+  const delDia = viajesDe(estadoVisible(), usuarioActual).filter(v => isoDia(new Date(v.fecha)) === isoDia(reg.dia));
+  const repetidos = tramos.filter(t => delDia.some(v => v.trayecto === t));
+  cerrarHojas();
+  if (repetidos.length) {
+    const ok = await preguntar('¿Registrar de nuevo?',
+      `Ya tienes registrada la ${repetidos.join(' y la ').toLowerCase()} del ${fechaLarga(fecha)}.`, 'Sí, registrar');
+    if (!ok) return;
+  }
+  tramos.forEach(t => cola.push({ id: nuevoId(), tipo: 'agregarViaje', usuario: usuarioActual, fecha: fecha, trayecto: t }));
+  persistir();
+  render();
+  sincronizar();
+  avisar(tramos.length === 1 ? 'Viaje registrado' : 'Ida y vuelta registradas');
+}
+
+async function eliminarViaje(id) {
+  const v = estadoVisible().viajes.find(x => x.id === id);
+  if (!v) return;
+  if (!await preguntar('¿Eliminar este viaje?', `${v.trayecto || 'Viaje'} del ${fechaLarga(v.fecha)}. Hazlo solo si lo registraste por error.`)) return;
+  // si el viaje todavía no salió del teléfono, basta con sacarlo de la cola
+  const i = cola.findIndex(o => o.tipo === 'agregarViaje' && o.id === id);
+  if (i >= 0 && !sincronizando) {
+    cola.splice(i, 1);
+    persistir();
+    render();
+  } else {
+    encolar({ id: nuevoId(), tipo: 'eliminarViaje', viajeId: id });
+  }
+  avisar('Viaje eliminado');
+}
+
+// ============================================================================
+// PAGO
+// ============================================================================
+let pago = {};
+
+function abrirPago() {
+  const s = estadoVisible();
+  const n = viajesDe(s, usuarioActual).length;
+  if (!n) return;
+  pago = { opcion: 'total', deuda: deudaDe(s, usuarioActual) };
+  document.getElementById('pag-resumen').textContent = `Debes ${clp(pago.deuda)} (${plural(n, 'viaje')}).`;
+
+
+  document.getElementById('pag-otro').value = '';
+  renderPago();
+  abrirHoja('hoja-pago');
+}
+
+function renderPago() {
+  const opcion = (k, titulo, valor) => {
+    const sel = pago.opcion === k;
+    return `<button type="button" onclick="elegirPago('${k}')" class="p-3 rounded-xl text-left flex flex-col gap-1 border-2 transition-colors ${sel ? 'border-success-green bg-success-green/10' : 'border-surface-container bg-surface-card'}">
+      <span class="text-label-lg text-navy-deep flex items-center gap-1">
+        <span class="material-symbols-outlined text-[18px] ${sel ? 'icon-fill text-success-green' : 'text-text-secondary'}">${sel ? 'radio_button_checked' : 'radio_button_unchecked'}</span>${titulo}
+      </span>
+      <span class="text-headline-md text-navy-deep pl-6">${valor}</span>
+    </button>`;
+  };
+  document.getElementById('pag-opciones').innerHTML =
+    opcion('total', 'Pagué todo', clp(pago.deuda)) +
+    opcion('otro', 'Otro monto', '<span class="material-symbols-outlined text-[22px] text-text-secondary">edit</span>');
+  const caja = document.getElementById('pag-otro-caja');
+  caja.classList.toggle('hidden', pago.opcion !== 'otro');
+  caja.classList.toggle('flex', pago.opcion === 'otro');
+  actualizarBotonPago();
+}
+
+function elegirPago(k) {
+  pago.opcion = k;
+  renderPago();
+  if (k === 'otro') document.getElementById('pag-otro').focus();
+}
+
+function montoElegido() {
+  if (pago.opcion === 'total') return pago.deuda;
+  return Number(document.getElementById('pag-otro').value.replace(/\D/g, '')) || 0;
+}
+
+function formatearMonto(input) {
+  const n = Number(input.value.replace(/\D/g, ''));
+  input.value = n ? n.toLocaleString('es-CL') : '';
+  actualizarBotonPago();
+}
+
+function actualizarBotonPago() {
+  const monto = montoElegido();
+  const valido = monto > 0 && monto <= pago.deuda;
+  const ayuda = document.getElementById('pag-otro-ayuda');
+  ayuda.textContent = monto > pago.deuda
+    ? `No puede ser más de lo que debes (${clp(pago.deuda)}).`
+    : monto > 0 ? `Te quedarán ${clp(pago.deuda - monto)} por pagar.` : '';
+  ayuda.className = 'text-body-sm ' + (monto > pago.deuda ? 'text-error' : 'text-text-secondary');
+  const btn = document.getElementById('pag-btn');
+  btn.disabled = !valido;
+  btn.textContent = valido ? `Confirmar pago de ${clp(monto)}` : 'Escribe el monto';
+  btn.className = 'w-full py-3.5 rounded-xl text-title-md font-bold transition-all ' +
+    (valido ? 'bg-success-green text-on-primary shadow-md active:scale-[0.98]' : 'bg-surface-container-highest text-text-secondary cursor-not-allowed');
+}
+
+function confirmarPago() {
+  const monto = montoElegido();
+  if (!(monto > 0 && monto <= pago.deuda)) return;
+  encolar({ id: nuevoId(), tipo: 'pagar', usuario: usuarioActual, monto: monto, fecha: new Date().toISOString() });
+  cerrarHojas();
+  avisar(monto === pago.deuda ? '¡Pago registrado! Quedaste al día' : `Abono de ${clp(monto)} registrado`);
+}
+
+// ============================================================================
+// DIÁLOGO Y AVISOS
+// ============================================================================
+function preguntar(titulo, texto, textoSi) {
+  return new Promise(resolver => {
+    const d = document.getElementById('dialogo');
+    document.getElementById('dlg-titulo').textContent = titulo;
+    document.getElementById('dlg-texto').textContent = texto;
+    const si = document.getElementById('dlg-si');
+    si.textContent = textoSi || 'Eliminar';
+    si.className = 'flex-1 py-3 rounded-xl text-on-primary text-label-lg shadow-md active:scale-95 transition-transform ' + (textoSi ? 'bg-orange-action' : 'bg-danger-red');
+    d.classList.remove('hidden');
+    d.classList.add('flex');
+    const cerrar = (r) => {
+      d.classList.add('hidden');
+      d.classList.remove('flex');
+      resolver(r);
+    };
+    document.getElementById('dlg-si').onclick = () => cerrar(true);
+    document.getElementById('dlg-no').onclick = () => cerrar(false);
+    d.onclick = (e) => { if (e.target === d) cerrar(false); };
+  });
+}
+
+let timerToast;
+function avisar(texto, tipo) {
+  const error = tipo === 'error';
+  const icono = document.getElementById('toast-icono');
+  icono.textContent = error ? 'error' : 'check_circle';
+  icono.className = 'material-symbols-outlined text-[22px] ' + (error ? 'text-danger-red' : 'text-success-green');
+  document.getElementById('toast-texto').textContent = texto;
+  const t = document.getElementById('toast');
+  t.classList.remove('translate-y-2', 'opacity-0');
+  clearTimeout(timerToast);
+  timerToast = setTimeout(() => t.classList.add('translate-y-2', 'opacity-0'), 2400);
+}
+
+// ============================================================================
+// FORMATO Y FECHAS
+// ============================================================================
+function clp(n) { return '$' + (Number(n) || 0).toLocaleString('es-CL'); }
+function plural(n, palabra) { return `${n} ${palabra}${n === 1 ? '' : 's'}`; }
+function esc(t) {
+  return String(t == null ? '' : t).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+}
+/** Argumento seguro para un onclick="fn(...)" */
+function attr(valor) { return esc(JSON.stringify(valor)); }
+
+function inicioDia(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+function sumarDias(d, n) { return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n); }
+function isoDia(d) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+function capitalizar(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
+function diaMes(d) {
+  const m = d.toLocaleDateString('es-CL', { month: 'short' }).replace('.', '');
+  return `${d.getDate()} ${capitalizar(m)}`;
+}
+/** "Hoy", "Ayer" o el día de la semana */
+function nombreDia(iso) {
+  const d = new Date(iso);
+  const atras = Math.round((inicioDia(new Date()) - inicioDia(d)) / 86400000);
+  if (atras === 0) return 'Hoy';
+  if (atras === 1) return 'Ayer';
+  return capitalizar(DIAS[d.getDay()]);
+}
+/** "12 de octubre" */
+function fechaLarga(iso) {
+  const d = new Date(iso);
+  if (isNaN(d)) return '';
+  return d.toLocaleDateString('es-CL', { day: 'numeric', month: 'long' });
+}
+
+// ============================================================================
+// INICIO
+// ============================================================================
+/** Pasa los viajes de la versión anterior (solo localStorage) a la planilla. */
+function migrarDatosAntiguos() {
+  const viejo = leerLS(LS.legado, null);
+  if (!viejo || typeof viejo !== 'object') return;
+  Object.keys(viejo).forEach(usuario => {
+    (viejo[usuario].viajes || []).forEach(v => {
+      cola.push({ id: nuevoId(), tipo: 'agregarViaje', usuario: usuario, fecha: v.fecha, trayecto: 'Ida' });
+    });
+  });
+  try { localStorage.removeItem(LS.legado); } catch (e) {}
+  persistir();
+}
+
+migrarDatosAntiguos();
+ir('inicio');
+sincronizar();
+setInterval(() => { if (document.visibilityState === 'visible') sincronizar(); }, 60000);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') sincronizar(); });
+window.addEventListener('online', () => sincronizar());
+</script>
+</body>
+</html>
