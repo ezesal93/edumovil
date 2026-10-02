@@ -7,9 +7,9 @@ App sencilla para que cada integrante anote sus viajes al momento de hacerlos y 
 
 | Archivo | Dónde va |
 |---|---|
-| `index.html` | GitHub (la app, con el logo incrustado) |
-| `icono.png` | GitHub (ícono para "Agregar a pantalla de inicio") |
-| `logo-edumovil.png` | GitHub (opcional, el logo en alta resolución) |
+| `index.html` | GitHub (la app) |
+| `logoedumovil.png` | GitHub (logo original) |
+| `icono-192.png`, `icono-512.png`, `apple-touch-icon.png`, `manifest.json` | GitHub (logo de la app e ícono para "Agregar a pantalla de inicio", generados desde `logoedumovil.png`) |
 | `Code.gs` | Apps Script, dentro de la planilla (en GitHub queda solo como respaldo) |
 
 ## Paso 1 – Planilla y Apps Script
@@ -34,7 +34,7 @@ const API_URL = 'https://script.google.com/macros/s/XXXXXXXX/exec';
 ## Paso 3 – GitHub Pages
 
 1. Crea un repositorio en GitHub (por ejemplo `edumovil`).
-2. Sube `index.html`, `icono.png` y `logo-edumovil.png` a la raíz.
+2. Sube todos los archivos a la raíz.
 3. En el repositorio: **Settings → Pages → Source: Deploy from a branch → `main` / `(root)` → Save**.
 4. Después de 1 o 2 minutos, la app queda en `https://TU-USUARIO.github.io/edumovil/`.
 5. Comparte ese link con el grupo. En el celular: **Agregar a pantalla de inicio**.

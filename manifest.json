@@ -1,0 +1,14 @@
+{
+  "name": "EduMovil",
+  "short_name": "EduMovil",
+  "description": "Registro de viajes del Gol",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f9fc",
+  "theme_color": "#001D4D",
+  "icons": [
+    { "src": "icono-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icono-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
